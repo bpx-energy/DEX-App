@@ -12,7 +12,7 @@ import seaborn as sns
 
 def main():
 	""" Common ML Dataset Explorer """
-	st.title("Common ML Dataset Explorer")
+	st.title("DEX Appr")
 	st.subheader("Datasets For ML Explorer with Streamlit")
 
 	html_temp = """
