@@ -138,7 +138,7 @@ def main():
 			st.write(cust_plot)
 			st.pyplot()
 
-	if st.button("Thanks"):
+	if st.button("SoHa Change Rocks!"):
 		st.balloons()
 
 	st.sidebar.header("About App")
@@ -148,9 +148,9 @@ def main():
 	st.sidebar.markdown("[Common ML Dataset Repo]("")")
 
 	st.sidebar.header("About")
-	st.sidebar.info("Jesus Saves@JCharisTech")
+	st.sidebar.info("Author: mark.nations@bpx.com")
 	st.sidebar.text("Built with Streamlit")
-	st.sidebar.text("Maintained by Jesse JCharis")
+	st.sidebar.text("Maintained by Mark Nations")
 
 
 if __name__ == '__main__':
