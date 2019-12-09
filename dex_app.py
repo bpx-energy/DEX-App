@@ -16,7 +16,7 @@ def main():
 	st.subheader("Datasets For ML Explorer with Streamlit")
 
 	html_temp = """
-	<div style="background-color:green;"><p style="color:white;font-size:50px;padding:10px">SoHa Change Team Rocks!</p></div>
+	<div style="background-color:green;"><p style="color:yellow;font-size:30px;padding:6px">SoHa Change Team Rocks!</p></div>
 	"""
 	st.markdown(html_temp,unsafe_allow_html=True)
 
