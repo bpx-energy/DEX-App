@@ -12,8 +12,8 @@ import seaborn as sns
 
 def main():
 	""" Common ML Dataset Explorer """
-	st.title("DEX Appr")
-	st.subheader("Datasets For ML Explorer with Streamlit")
+	st.title("DEX App")
+	st.subheader("Dataset Explorer for BPX Energy ML Projects")
 
 	html_temp = """
 	<div style="background-color:green;"><p style="color:yellow;font-size:30px;padding:6px">SoHa Change Team Rocks!</p></div>
