@@ -11,7 +11,7 @@ def main():
         st.title("D.E.X")
         st.subheadear("Datasets Explorer for BPX Energy")
 
-        def file_selector(C:\\Users\\mark.nations\\Desktop\\Data Explorer\\datasets='.datasets')
+        def file_selector(C:\\Users\\mark.nations\\Desktop\\Data Explorer\\datasets)
             filenames = os.listdir(folder_path)
             selected_filename = st.selectbox("Select a file",filenames)
             return os.path.join(folder_path,selected_filename)
