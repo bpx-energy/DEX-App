@@ -1,157 +1,131 @@
+import streamlit as st
 import os
-import streamlit as st 
-
-# EDA Pkgs
-import pandas as pd 
-
-# Viz Pkgs
-import matplotlib.pyplot as plt 
+import pandas as pd
+import matplotlib.pyplot as plt
 import matplotlib
 matplotlib.use('Agg')
-import seaborn as sns 
+import seaborn as sns
 
 def main():
-	""" Common ML Dataset Explorer """
-	st.title("DEX App")
-	st.subheader("Dataset Explorer for BPX Energy ML Projects")
+        """ Data Explorer App X """
+        st.title("D.E.X")
+        st.subheadear("Datasets Explorer for BPX Energy")
 
-	html_temp = """
-	<div style="background-color:green;"><p style="color:yellow;font-size:30px;padding:6px">SoHa Change Team Rocks!</p></div>
-	"""
-	st.markdown(html_temp,unsafe_allow_html=True)
+        def file_selector(C:\\Users\\mark.nations\\Desktop\\Data Explorer\\datasets='.datasets'):
+            filenames = os.listdir(C:\\Users\\mark.nations\\Desktop\\Data Explorer\\datasets='.datasets'):)
+            selected_filename = st.selectbox("Select a file",filenames)
+            return os.path.join(folder_path,selected_filename)
 
-	def file_selector(folder_path='./datasets'):
-		filenames = os.listdir(folder_path)
-		selected_filename = st.selectbox("Select A file",filenames)
-		return os.path.join(folder_path,selected_filename)
+        filename = file_selector()
+        st.info("You selected {}".format(filename))
 
-	filename = file_selector()
-	st.info("You Selected {}".format(filename))
+        df = pd.read_csv(filename)
 
-	# Read Data
-	df = pd.read_csv(filename)
-	# Show Dataset
+        if st.checkbox("Show Dataset"):
+            number = st.number_input("Number of Rows to View")
+            st.dataframe(df.head(number))
 
-	if st.checkbox("Show Dataset"):
-		number = st.number_input("Number of Rows to View")
-		st.dataframe(df.head(number))
+        if st.button("Column Names"):
+            st.write(df.columns)
 
-	# Show Columns
-	if st.button("Column Names"):
-		st.write(df.columns)
+        if st.checkbox("Shape of Dataset"):
+            data_dim = st.radio("Show Dimensions by ",("Rows","Columns"))
+            if data_dim == 'Rows':
+                st.text("Number of Rows")
+                st.write(df.shape[0])
+            elif data_dim == 'Columns':
+                st.text("Number of Columns")
+                st.write(df.shpe[1])
+            else:
+                st.write(df.shape)
 
-	# Show Shape
-	if st.checkbox("Shape of Dataset"):
-		data_dim = st.radio("Show Dimension By ",("Rows","Columns"))
-		if data_dim == 'Rows':
-			st.text("Number of Rows")
-			st.write(df.shape[0])
-		elif data_dim == 'Columns':
-			st.text("Number of Columns")
-			st.write(df.shape[1])
-		else:
-			st.write(df.shape)
+        if st.checkbox("Select Columns to Show"):
+            all_columns = df.columns.tolist()
+            selected_columns = st.multiselect("Select",all_columns)
+            new_df = df[selected_columns]
+            st.dataframe(new_df)
 
-	# Select Columns
-	if st.checkbox("Select Columns To Show"):
-		all_columns = df.columns.tolist()
-		selected_columns = st.multiselect("Select",all_columns)
-		new_df = df[selected_columns]
-		st.dataframe(new_df)
-	
-	# Show Values
-	if st.button("Value Counts"):
-		st.text("Value Counts By Target/Class")
-		st.write(df.iloc[:,-1].value_counts())
+        if st.button("Value Count"):
+            st.text("Value Counts by Target/Class")
+            st.write(df.iloc[:,-1].value_counts())
 
+        if st.button("Data Types"):
+            st.write(df.types)
 
-	# Show Datatypes
-	if st.button("Data Types"):
-		st.write(df.dtypes)
+        if st.checkbox("Summary"):
+            st.write(df.describe().T)
 
+        st.subheader("Data Visualization")
 
+        if st.checkbox("Correlation Plot[Seaborn]"):
+            st.write(sns.heatmap(df.corr(),annot=True))
+            st.pyplot()
 
-	# Show Summary
-	if st.checkbox("Summary"):
-		st.write(df.describe().T)
+        if st.checkbox("Pie Plot"):
+            all_columns_names = df.columns.tolist()
+            if st.button("Generate Pie Plot"):
+                st.success("Generating A Pie Plot")
+                st.write(df.iloc[:-1].value_counts().plot.pie(autopct="%1.1f%%"))
+                st.pyplot()
 
-	## Plot and Visualization
+        if st.checkbox("Plot of Value Counts"):
+            st.text("Value Counts by Target")
+            all_columns_names = df.columns.tolist()
+            primary_col = st.selectbox("Primary Column to GroupBy",all_columns_names)
+            selected_columns_names = st.multiselect("Select Columns",all_columns_names)
+            if st.button("Plot"):
+                st.text("Generate Plot")
+                if selected_columns_names:
+                    vc_plot = df.groupby(primary_col)[selected_columns_names].count()
+                else:
+                    vc_plot = df.iloc[:,-1].value_counts()
+                st.write(vc_plot.plot(kind="bar"))
+                st.pyplot()
 
-	st.subheader("Data Visualization")
-	# Correlation
-	# Seaborn Plot
-	if st.checkbox("Correlation Plot[Seaborn]"):
-		st.write(sns.heatmap(df.corr(),annot=True))
-		st.pyplot()
+        # Customizable plot
 
-	
-	# Pie Chart
-	if st.checkbox("Pie Plot"):
-		all_columns_names = df.columns.tolist()
-		if st.button("Generate Pie Plot"):
-			st.success("Generating A Pie Plot")
-			st.write(df.iloc[:,-1].value_counts().plot.pie(autopct="%1.1f%%"))
-			st.pyplot()
+        st.subheader("Customizable Plot")
+        all_columns_names = df.columns.tolist()
+        type_of_plot = st.selectbox("Select Type of Plot",["area","bar","line","hist","box","kde"])
+        selected_columns_names = st.multiselect("Select Columns to Plot",all_columns_names)
 
-	# Count Plot
-	if st.checkbox("Plot of Value Counts"):
-		st.text("Value Counts By Target")
-		all_columns_names = df.columns.tolist()
-		primary_col = st.selectbox("Primary Columm to GroupBy",all_columns_names)
-		selected_columns_names = st.multiselect("Select Columns",all_columns_names)
-		if st.button("Plot"):
-			st.text("Generate Plot")
-			if selected_columns_names:
-				vc_plot = df.groupby(primary_col)[selected_columns_names].count()
-			else:
-				vc_plot = df.iloc[:,-1].value_counts()
-			st.write(vc_plot.plot(kind="bar"))
-			st.pyplot()
+        if st.button("Generate Plot"):
+            st.success("Generating Customizable Plot of {} for {}".format(type_of_plot,selected_columns_names))
 
+                    # Plot by streamlit
+                    if type_of_plot == 'area':
+                        cust_data = df[selected_columns_names]
+                        st.area_chart(cust_data)
 
-	# Customizable Plot
+                    elif type_of_plot == 'bar':
+                        cust_data = df[selected_columns_names]
+                        st.bar_chart(cust_data)
 
-	st.subheader("Customizable Plot")
-	all_columns_names = df.columns.tolist()
-	type_of_plot = st.selectbox("Select Type of Plot",["area","bar","line","hist","box","kde"])
-	selected_columns_names = st.multiselect("Select Columns To Plot",all_columns_names)
+                    elif type_of_plot == 'line':
+                        cust_data = df[selected_columns_names]
+                        st.line_chart(cust_data)
 
-	if st.button("Generate Plot"):
-		st.success("Generating Customizable Plot of {} for {}".format(type_of_plot,selected_columns_names))
+                    # Custom plot
+                    elif type_of_plot:
+                        cust_plot= df[selected_columns_names].plot(kind=type_of_plot)
+                        st.write(cust_plot)
+                        st.pyplot()
 
-		# Plot By Streamlit
-		if type_of_plot == 'area':
-			cust_data = df[selected_columns_names]
-			st.area_chart(cust_data)
+        if st.button("Travis Comer Rocks!"):
+                    st.baloons()
 
-		elif type_of_plot == 'bar':
-			cust_data = df[selected_columns_names]
-			st.bar_chart(cust_data)
+        # Sidebar (Left Gutter)
+        st.sidebar.header("About App")
+	    st.sidebar.info("A pythonic App for Exploring BPX Energy Datasets")
 
-		elif type_of_plot == 'line':
-			cust_data = df[selected_columns_names]
-			st.line_chart(cust_data)
+	    st.sidebar.header("Get Datasets")
 
-		# Custom Plot 
-		elif type_of_plot:
-			cust_plot= df[selected_columns_names].plot(kind=type_of_plot)
-			st.write(cust_plot)
-			st.pyplot()
-
-	if st.button("SoHa Change Rocks!"):
-		st.balloons()
-
-	st.sidebar.header("About App")
-	st.sidebar.info("A Simple EDA App for Exploring Common ML Dataset")
-
-	st.sidebar.header("Get Datasets")
-	st.sidebar.markdown("[Common ML Dataset Repo]("")")
-
-	st.sidebar.header("About")
-	st.sidebar.info("Author: mark.nations@bpx.com")
-	st.sidebar.text("Built with Streamlit")
-	st.sidebar.text("Maintained by Mark Nations")
+	    st.sidebar.header("About")
+	    st.sidebar.info("App for exploring various datasets")
+	    st.sidebar.text("Built with Streamlit")
+	    st.sidebar.text("Authored by mark.nations@bpx.com")
 
 
 if __name__ == '__main__':
 	main()
+
