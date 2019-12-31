@@ -21,7 +21,7 @@ def main():
 	st.markdown(html_temp,unsafe_allow_html=True)
 
 	def file_selector(folder_path='./datasets'):
-		filenames = os.listdir(folder_path)
+		filenames = https://github.com/bpx-energy/DEX-App/tree/master/datasets
 		selected_filename = st.selectbox("Select A file",filenames)
 		return os.path.join(folder_path,selected_filename)
 
