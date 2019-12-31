@@ -15,9 +15,6 @@ def main():
 	st.title("Common ML Dataset Explorer")
 	st.subheader("Datasets For ML Explorer with Streamlit")
 
-	html_temp = """
-	<div style="background-color:green;"><p style="color:yellow;font-size:50px;padding:10px">Change Teams Rock!!</p></div>
-	"""
 	st.markdown(html_temp,unsafe_allow_html=True)
 
 	def file_selector(//github.com/bpx-energy/DEX-App/tree/master/datasets = './datasets'):
